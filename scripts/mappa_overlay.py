@@ -1,8 +1,9 @@
 """
-Mappa overlay Val d'Agri — brigantaggio post-unitario 1860-1870.
+Mappa overlay Val d'Agri — brigantaggio post-unitario 1860-1870.  v2.0
 
 Sfondo: 5 fogli AMS 1:50,000 (IGM 1895-1943) georeferenziati.
 Overlay vettoriale: confini comunali + idrografia + viabilità (DBSN PZ+MT 2025).
+Nuovi layer v2.0: sentieri storici (mulattiere AMS, verde), target drone/LiDAR.
 
 Output: output/mappa_valdagri_overlay.png  (300 dpi, stampa A3)
 """
@@ -17,6 +18,7 @@ import rasterio
 from rasterio.enums import Resampling
 from rasterio.plot import reshape_as_image
 import geopandas as gpd
+import json
 from pathlib import Path
 import warnings
 warnings.filterwarnings('ignore')
@@ -24,6 +26,7 @@ warnings.filterwarnings('ignore')
 DATA   = Path("/home/miki/val-dagri-research/data")
 GEODIR = Path("/home/miki/val-dagri-research/output/geotiff")
 OUTDIR = Path("/home/miki/val-dagri-research/output")
+VECDIR = Path("/home/miki/val-dagri-research/output/vettori")
 
 DBSN_PZ = str(DATA / "dbsn_potenza/Potenza_dbsn.gdb")
 DBSN_MT = str(DATA / "dbsn_matera/Matera_dbsn.gdb")
@@ -143,7 +146,56 @@ for dbsn_path, label in [(DBSN_PZ,"PZ"),(DBSN_MT,"MT")]:
     except Exception as e:
         print(f"  ERRORE strade {label}: {e}")
 
-# ── 5. Etichette comuni target ────────────────────────────────────────────────
+# ── 5a. Sentieri storici (mulattiere AMS 1895-1902) ──────────────────────────
+print("Carico sentieri storici AMS...")
+mule_path = VECDIR / "mule_tracks_ams.geojson"
+if mule_path.exists():
+    with open(mule_path) as f:
+        mule_gj = json.load(f)
+    n_drawn = 0
+    for feat in mule_gj["features"]:
+        coords = feat["geometry"]["coordinates"]
+        lons = [c[0] for c in coords]
+        lats = [c[1] for c in coords]
+        if LON_W <= lons[1] <= LON_E and LAT_S <= lats[1] <= LAT_N:
+            ax.plot(lons, lats, color='#1B8000', linewidth=0.55, alpha=0.70,
+                    linestyle='--', zorder=7, solid_capstyle='round')
+            n_drawn += 1
+    print(f"  ✓ sentieri AMS: {n_drawn} segmenti tracciati")
+
+# ── 5b. Target drone/LiDAR ───────────────────────────────────────────────────
+print("Carico target drone/LiDAR...")
+tgt_path = VECDIR / "target_drone_lidar.geojson"
+if tgt_path.exists():
+    with open(tgt_path) as f:
+        tgt_gj = json.load(f)
+    COLORI_TARGET = {
+        "dolina_carsica":      ("#9C27B0", "*", 9),   # viola, stella
+        "parete_rocciosa":     ("#FF5722", "^", 7),   # arancio scuro, triangolo
+        "struttura_abbandonata": ("#795548", "s", 6), # marrone, quadrato
+        "depressioni_multiple": ("#9C27B0", "D", 6),  # viola, rombo
+        "bosco_rifugio":       ("#2E7D32", "P", 7),   # verde scuro, croce+
+        "gola_fluviale":       ("#0288D1", "v", 7),   # azzurro, triangolo inv.
+    }
+    for feat in tgt_gj["features"]:
+        lon, lat = feat["geometry"]["coordinates"]
+        p = feat["properties"]
+        tipo = p.get("tipo", "")
+        nome = p.get("nome", "")
+        prio = p.get("priorita", "MEDIA")
+        col, marker, ms = COLORI_TARGET.get(tipo, ("#FF0000", "o", 6))
+        edge_w = 1.5 if prio == "ALTA" else 0.8
+        ax.plot(lon, lat, marker=marker, color=col, markersize=ms,
+                markeredgecolor='white', markeredgewidth=edge_w,
+                zorder=12, clip_on=True)
+        ax.annotate(nome, xy=(lon, lat), xytext=(5, 5),
+                    textcoords='offset points', fontsize=4.5,
+                    color=col, fontweight='bold',
+                    path_effects=[pe.withStroke(linewidth=2, foreground='white')],
+                    zorder=13)
+    print(f"  ✓ {len(tgt_gj['features'])} target drone/LiDAR")
+
+# ── 6. Etichette comuni target ────────────────────────────────────────────────
 shadow = [pe.withStroke(linewidth=2.8, foreground='white')]
 for nome, (lat, lon, prov) in COMUNI_TARGET.items():
     c = COLORI[prov]
@@ -172,12 +224,12 @@ ax.tick_params(labelsize=7)
 
 # ── 7. Titolo ─────────────────────────────────────────────────────────────────
 ax.set_title(
-    "Val d'Agri — Viabilità storica e confini comunali  |  Brigantaggio 1860–1870\n"
-    "Sfondo: fogli AMS 1:50,000 (IGM 1895–1943) · Confini e viabilità: DBSN IGM 2025",
+    "Val d'Agri — Sentieri storici, viabilità e target per survey  |  Brigantaggio 1860–1870  [v2.0]\n"
+    "Sfondo AMS 1:50,000 (IGM 1895–1943) · DBSN PZ+MT 2025 · Sentieri estratti AMS · Target drone/LiDAR",
     fontsize=10, fontweight='bold', pad=9
 )
 
-# ── 8. Legenda ────────────────────────────────────────────────────────────────
+# ── 9. Legenda ────────────────────────────────────────────────────────────────
 legend_elements = [
     mpatches.Patch(facecolor='#e74c3c', alpha=0.45,
                    edgecolor='#922b21', label='Comuni target – Potenza (6)'),
@@ -187,20 +239,33 @@ legend_elements = [
     Line2D([0],[0], color='#FF6F00', linewidth=1.2, label='Viabilità moderna principale (DBSN)'),
     Line2D([0],[0], color='#FF8F00', linewidth=0.7, linestyle='--',
            label='Viabilità secondaria (DBSN)'),
+    Line2D([0],[0], color='#1B8000', linewidth=0.8, linestyle='--',
+           label='Sentieri storici / mulattiere (estratti AMS 1895-1902)'),
     Line2D([0],[0], color='#555555', linewidth=0.6, label='Confini comunali'),
     mpatches.Patch(facecolor='#f5f0e8', edgecolor='#aaaaaa',
                    label='AMS 1:50,000 IGM 1895–1943'),
+    Line2D([0],[0], marker='*', color='#9C27B0', linewidth=0,
+           markersize=8, label='Target LiDAR – dolina carsica'),
+    Line2D([0],[0], marker='^', color='#FF5722', linewidth=0,
+           markersize=7, label='Target LiDAR – parete rocciosa (timpa)'),
+    Line2D([0],[0], marker='P', color='#2E7D32', linewidth=0,
+           markersize=7, label='Target LiDAR – bosco rifugio'),
+    Line2D([0],[0], marker='v', color='#0288D1', linewidth=0,
+           markersize=7, label='Target LiDAR – gola fluviale'),
+    Line2D([0],[0], marker='s', color='#795548', linewidth=0,
+           markersize=6, label='Target LiDAR – struttura abbandonata'),
 ]
-ax.legend(handles=legend_elements, loc='lower right', fontsize=6.5,
+ax.legend(handles=legend_elements, loc='lower right', fontsize=5.8,
           framealpha=0.93, edgecolor='#888888', fancybox=True)
 
-# ── 9. Nota metodologica ──────────────────────────────────────────────────────
+# ── 10. Nota metodologica ─────────────────────────────────────────────────────
 note = (
     "Fogli AMS: Montemurro 211-IV (1896), S. Arcangelo 211-I (1896), "
     "Laurenzana 200-III (1895),\nStigliano 200-II (1902), Tursi 212-IV (1943). "
     "Georef. 4-GCP corner, EPSG:4326, errore <3 m.\n"
     "DBSN PZ+MT: dati vettoriali IGM 2025 (EPSG:7794→4326). "
-    "Viabilità storica (mulattiere, crinali) visibile sullo sfondo AMS."
+    "Sentieri storici estratti automaticamente da AMS (HSV + morfologia). "
+    "v2.0 — target drone/LiDAR identificati da analisi visiva."
 )
 ax.text(0.01, 0.01, note, transform=ax.transAxes, fontsize=5.3,
         verticalalignment='bottom', style='italic', color='#333333',

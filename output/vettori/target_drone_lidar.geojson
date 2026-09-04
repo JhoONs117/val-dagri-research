@@ -1,0 +1,114 @@
+{
+  "type": "FeatureCollection",
+  "name": "Target drone LiDAR - Val d'Agri",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.082088,
+          40.421008
+        ]
+      },
+      "properties": {
+        "nome": "Dolina Myrtoappio",
+        "tipo": "dolina_carsica",
+        "priorita": "ALTA",
+        "foglio_ams": "Laurenzana 200-III (1895)",
+        "note": "Contorno ovale chiuso su curve di livello = depressione carsica. Potenziale ingresso grotta. Target LiDAR prioritario.",
+        "survey": "Drone + LiDAR ground penetration analysis"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.06249,
+          40.413011
+        ]
+      },
+      "properties": {
+        "nome": "Timpa d'Emma",
+        "tipo": "parete_rocciosa",
+        "priorita": "ALTA",
+        "foglio_ams": "Laurenzana 200-III (1895)",
+        "note": "Timpa = parete calcarea verticale in dialetto lucano. Affioramento calcareo con alta probabilità di cavità. Citato esplicitamente sulla carta IGM 1895.",
+        "survey": "Drone ispezione pareti + LiDAR per cavità"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.08862,
+          40.448424
+        ]
+      },
+      "properties": {
+        "nome": "Mulino (Laurenzana nord)",
+        "tipo": "struttura_abbandonata",
+        "priorita": "MEDIA",
+        "foglio_ams": "Laurenzana 200-III (1895)",
+        "note": "Mulino ad acqua su torrente. Struttura in pietra, punto di incontro strategico. Non nel DBSN moderno = probabile rudere.",
+        "survey": "Drone fotogrammetria + LiDAR strutturale"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.091364,
+          40.166781
+        ]
+      },
+      "properties": {
+        "nome": "S. Chihico / depressioni",
+        "tipo": "depressioni_multiple",
+        "priorita": "MEDIA",
+        "foglio_ams": "Montemurro 211-IV (1896)",
+        "note": "Zona con multiple curve chiuse e confini amministrativi storici. Area remota con percorsi mulattieri convergenti. Possibili ripari naturali.",
+        "survey": "Drone ricognizione + LiDAR DTM"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.983,
+          40.283
+        ]
+      },
+      "properties": {
+        "nome": "Bosco di Montemurro",
+        "tipo": "bosco_rifugio",
+        "priorita": "ALTA",
+        "foglio_ams": "Montemurro 211-IV (1896)",
+        "note": "Citato nelle cronache del brigantaggio come principale rifugio delle bande. Bosco fitto ancora visibile sulla carta AMS. LiDAR rileva sentieri sotto la copertura.",
+        "survey": "LiDAR aereo + analisi CHM/DTM"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.1,
+          40.25
+        ]
+      },
+      "properties": {
+        "nome": "Gole del Fiume Agri (confluenza R. Crocacuorl)",
+        "tipo": "gola_fluviale",
+        "priorita": "ALTA",
+        "foglio_ams": "Montemurro 211-IV (1896)",
+        "note": "Gola profonda con pareti verticali visibili dalla topografia AMS. Zona inaccessibile da terra, con simboli rupestri. Alta probabilità di cavità nelle pareti.",
+        "survey": "Drone ispezione gola + LiDAR pareti verticali"
+      }
+    }
+  ]
+}

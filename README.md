@@ -6,7 +6,7 @@
 
 [![Mappa overlay Val d'Agri](docs/mappa_valdagri_preview.jpg)](docs/mappa_valdagri_preview.jpg)
 
-*Sfondo: 5 fogli AMS 1:50,000 (IGM 1895–1943). Overlay: confini comunali, idrografia e viabilità moderna DBSN IGM 2025 per 10 comuni target (6 PZ in rosso, 4 MT in blu). Risoluzione originale: 6439×3847 px, 300 dpi.*
+*v2.0 — Sfondo: 5 fogli AMS 1:50,000 (IGM 1895–1943). Overlay: confini comunali, idrografia, viabilità moderna DBSN 2025, **sentieri storici/mulattiere estratti automaticamente** (verde tratteggiato, 462 segmenti), **target per survey drone+LiDAR** (simboli colorati: doline carsiche ★ viola, timpe/pareti ^ arancio, boschi rifugio ✚ verde, gole fluviali ▽ azzurro). Risoluzione originale: 6443×3847 px, 300 dpi.*
 
 ---
 
@@ -20,6 +20,7 @@
 | FASE 2 — Setup ambiente tecnico | COMPLETATA ✓ | 2026-09-04 |
 | FASE 3 — Georeferenziamento (5 fogli) | COMPLETATA ✓ | 2026-09-04 |
 | FASE 4 — Mappa overlay AMS + DBSN PZ+MT | COMPLETATA ✓ | 2026-09-04 |
+| FASE 5 — Estrazione sentieri storici + target drone/LiDAR | COMPLETATA ✓ | 2026-09-04 |
 
 ---
 
