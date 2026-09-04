@@ -1,0 +1,36 @@
+# ── File di grandi dimensioni (non versionati) ──────────────────────────────
+# Fogli AMS originali (JPEG, 5-6 MB ciascuno) — scaricabili da Wayback Machine
+data/*.jpg
+data/*.JPG
+
+# DBSN — geodatabase completi (centinaia di MB)
+data/dbsn_potenza/
+data/dbsn_matera/
+data/*.zip
+
+# Immagini Rumsey/Richter
+data/rumsey_tiles/
+data/rumsey_*.jpg
+data/richter_*.jpg
+data/mappa_militare_*.png
+
+# GeoTIFF georeferenziati (26-44 MB ciascuno)
+output/geotiff/
+
+# Output immagini grandi
+output/*.png
+output/*.jpg
+output/ams_thumbnails/
+
+# ── File di sistema ──────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# ── File sensibili ───────────────────────────────────────────────────────────
+.env
+secrets.txt
