@@ -1,5 +1,15 @@
 # Val d'Agri — Ricerca Storico-Cartografica (1860-1870)
 
+> Georeferenziamento di carte militari ottocentesche per la ricerca sul brigantaggio post-unitario in Basilicata.
+
+## Mappa output
+
+[![Mappa overlay Val d'Agri](docs/mappa_valdagri_preview.jpg)](docs/mappa_valdagri_preview.jpg)
+
+*Sfondo: 5 fogli AMS 1:50,000 (IGM 1895–1943). Overlay: confini comunali, idrografia e viabilità moderna DBSN IGM 2025 per 10 comuni target (6 PZ in rosso, 4 MT in blu). Risoluzione originale: 6439×3847 px, 300 dpi.*
+
+---
+
 ## Stato del progetto
 
 | Fase | Stato | Data |
@@ -7,9 +17,9 @@
 | FASE 0 — Ispezione dati DBSN | COMPLETATA ✓ | 2026-08-22 |
 | FASE 1 — Reperimento mappe storiche 1860-1870 | PARZIALE ⚠️ | 2026-08-22 |
 | FASE 1b — Fogli AMS 1:50,000 (University of Texas) | COMPLETATA ✓ | 2026-09-04 |
-| FASE 2 — Setup ambiente tecnico | IN ATTESA |  |
-| FASE 3 — Georeferenziamento | IN ATTESA |  |
-| FASE 4 — Analisi e output finale | IN ATTESA |  |
+| FASE 2 — Setup ambiente tecnico | COMPLETATA ✓ | 2026-09-04 |
+| FASE 3 — Georeferenziamento (5 fogli) | COMPLETATA ✓ | 2026-09-04 |
+| FASE 4 — Mappa overlay AMS + DBSN PZ+MT | COMPLETATA ✓ | 2026-09-04 |
 
 ---
 
